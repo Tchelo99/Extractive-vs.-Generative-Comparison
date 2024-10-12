@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Answering System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        textarea {
+            height: 200px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .answer-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .answer-box {
+            width: 48%;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Question Answering System</h1>
+    <form id="qa-form">
+        <label for="context">Context:</label><br>
+        <textarea id="context" name="context" rows="10"></textarea><br>
+        <label for="question">Question:</label><br>
+        <input type="text" id="question" name="question"><br><br>
+        <input type="submit" value="Get Answers">
+    </form>
+    <div class="answer-container">
+        <div class="answer-box">
+            <h3>T5 Answer:</h3>
+            <p id="t5-answer"></p>
+        </div>
+        <div class="answer-box">
+            <h3>BERT Answer:</h3>
+            <p id="bert-answer"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('qa-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const context = document.getElementById('context').value;
+            const question = document.getElementById('question').value;
+            
+            // Function to get answer from a specific model
+            async function getAnswer(model) {
+                const response = await fetch('/qa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ context, question, model }),
+                });
+                const result = await response.json();
+                return result.answer;
+            }
+
+            // Get answers from both models
+            const t5Answer = await getAnswer('t5');
+            const bertAnswer = await getAnswer('bert');
+
+            // Display answers
+            document.getElementById('t5-answer').textContent = t5Answer;
+            document.getElementById('bert-answer').textContent = bertAnswer;
+        });
+    </script>
+</body>
+</html>
