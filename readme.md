@@ -12,8 +12,8 @@ This project implements a question-answering system using T5 (Text-to-Text Trans
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/qa-system-t5-bert.git
-   cd qa-system-t5-bert
+   https://github.com/Tchelo99/QA-Extractive-vs-Generative-Comparison.git
+   cd QA-Extractive-vs-Generative-Comparison
    ```
 
 2. Create a virtual environment and activate it:
